@@ -2,8 +2,10 @@ package app.cash.sqldelight.multiplatform
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.konan.target.HostManager
 
 class MultiplatformConventions : Plugin<Project> {
@@ -24,6 +26,36 @@ class MultiplatformConventions : Plugin<Project> {
         compilations.configureEach {
           it.kotlinOptions {
             moduleKind = "umd"
+          }
+        }
+      }
+      @OptIn(ExperimentalWasmDsl::class)
+      wasmJs {
+        browser {
+          testTask {
+            it.useKarma {
+              useChromeHeadless()
+            }
+          }
+        }
+        compilations.configureEach {
+          it.kotlinOptions {
+            moduleKind = "umd"
+          }
+        }
+      }
+
+      @OptIn(ExperimentalKotlinGradlePluginApi::class)
+      applyDefaultHierarchyTemplate {
+        common {
+          group("jsNativeCommon") {
+            withJs()
+            withWasmJs()
+            withNative()
+          }
+          group("jsCommon") {
+            withJs()
+            withWasmJs()
           }
         }
       }

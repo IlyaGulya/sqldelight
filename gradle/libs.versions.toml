@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.22"
+kotlin = "2.0.0-Beta4"
 dokka = "1.9.10"
 kotlinCoroutines = "1.8.0"
 idea = "222.4459.24" # Flamingo | 2022.2.1 (see https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html)
@@ -39,7 +39,8 @@ kotlinPoet = { module = "com.squareup:kotlinpoet", version = "1.16.0" }
 junit = { module = "junit:junit", version = "4.13.2" }
 jgrapht = { module = "org.jgrapht:jgrapht-core", version = "1.5.2" }
 truth = { module = "com.google.truth:truth", version = "1.4.1" }
-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
+# TODO: replace Turbine version with one supporting wasmJs when released
+turbine = { module = "app.cash.turbine:turbine", version = "1.1.0-SNAPSHOT" }
 bugsnag = { module = "com.bugsnag:bugsnag", version = "3.7.1" }
 picnic = { module = "com.jakewharton.picnic:picnic", version = "0.7.0" }
 moshi = { module = "com.squareup.moshi:moshi", version = "1.15.1" }
@@ -107,5 +108,5 @@ publish = { id = "com.vanniktech.maven.publish", version = "0.20.0" }
 spotless = { id = "com.diffplug.spotless", version = "6.25.0" }
 changelog = { id = "org.jetbrains.changelog", version = "2.0.0" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
-ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.17" }
+ksp = { id = "com.google.devtools.ksp", version = "2.0.0-Beta4-1.0.17" }
 binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.14.0" }

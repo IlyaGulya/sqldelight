@@ -17,16 +17,9 @@ apiValidation {
 
 kotlin {
   sourceSets {
-    commonMain {
-    }
     commonTest {
       dependencies {
         implementation libs.kotlin.test
-      }
-    }
-    jvmTest {
-      dependencies {
-        implementation libs.kotlin.test.junit
       }
     }
   }
