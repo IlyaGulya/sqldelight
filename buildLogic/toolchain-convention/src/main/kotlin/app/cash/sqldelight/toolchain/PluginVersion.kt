@@ -17,6 +17,9 @@ abstract class PluginVersion : DefaultTask() {
   }.standardOutput.asText
 
   @get:Input
+  val groupName: String = project.group.toString()
+
+  @get:Input
   val version: String = project.version.toString()
 
   @get:OutputDirectory
@@ -32,6 +35,7 @@ abstract class PluginVersion : DefaultTask() {
 """// Generated file. Do not edit!
 package app.cash.sqldelight
 
+val GROUP = "$groupName"
 val VERSION = "$version"
 val GIT_SHA = "${gitHash.get().trim()}"
 """,

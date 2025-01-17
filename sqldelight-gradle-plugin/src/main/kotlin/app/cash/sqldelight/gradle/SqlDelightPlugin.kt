@@ -87,8 +87,8 @@ abstract class SqlDelightPlugin : Plugin<Project> {
 
     val needsAsyncRuntime = extension.databases.any { it.generateAsync.get() }
     val runtimeDependencies = buildList {
-      add(project.dependencies.create("app.cash.sqldelight:runtime:$VERSION"))
-      if (needsAsyncRuntime) add(project.dependencies.create("app.cash.sqldelight:async-extensions:$VERSION"))
+      add(project.dependencies.create("$GROUP:runtime:$VERSION"))
+      if (needsAsyncRuntime) add(project.dependencies.create("$GROUP:async-extensions:$VERSION"))
     }
 
     // Add the runtime dependency.
@@ -120,7 +120,7 @@ abstract class SqlDelightPlugin : Plugin<Project> {
           project.sqliteVersion()?.let(database::dialect)
         }
         if (!database.addedDialect) {
-          database.dialect("app.cash.sqldelight:sqlite-3-18-dialect:$VERSION")
+          database.dialect("$GROUP:sqlite-3-18-dialect:$VERSION")
         }
         database.registerTasks()
       }

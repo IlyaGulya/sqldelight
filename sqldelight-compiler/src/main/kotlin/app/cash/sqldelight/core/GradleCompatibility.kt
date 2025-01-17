@@ -1,5 +1,6 @@
 package app.cash.sqldelight.core
 
+import app.cash.sqldelight.GROUP
 import app.cash.sqldelight.VERSION
 
 object GradleCompatibility {
@@ -9,7 +10,7 @@ object GradleCompatibility {
     } catch (e: Throwable) {
       // If we can't even read the properties file version, it is not compatibile
       return CompatibilityReport.Incompatible(
-        reason = "Plugin 'SQLDelight' is incompatible with the current version of the SQLDelight Gradle plugin. Upgrade the version of app.cash.sqldelight:gradle-plugin.",
+        reason = "Plugin 'SQLDelight' is incompatible with the current version of the SQLDelight Gradle plugin. Upgrade the version of $GROUP:gradle-plugin.",
       )
     }
 
@@ -25,7 +26,7 @@ object GradleCompatibility {
 
     if (currentGradleVersion < minimumGradleVersion) {
       return CompatibilityReport.Incompatible(
-        reason = "Gradle plugin 'app.cash.sqldelight:gradle-plugin' is incompatible with the current SQLDelight IntelliJ Plugin version. Use version $minimumGradleVersion or later.",
+        reason = "Gradle plugin '$GROUP:gradle-plugin' is incompatible with the current SQLDelight IntelliJ Plugin version. Use version $minimumGradleVersion or later.",
       )
     }
 
