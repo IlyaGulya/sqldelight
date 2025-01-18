@@ -1,8 +1,13 @@
 pluginManagement {
   resolutionStrategy {
+    def useLocalDeps = Boolean.valueOf(useLocalDeps)
     eachPlugin {
-      if (requested.id.namespace == 'app.cash') {
-        useModule('app.cash.sqldelight:gradle-plugin:+')
+      if (requested.id.namespace == 'me.gulya') {
+        if (useLocalDeps) {
+          useModule('me.gulya.sqldelight:gradle-plugin:+')
+        } else {
+          useModule("me.gulya.sqldelight:gradle-plugin:${remoteDepsVersion}")
+        }
       }
     }
   }
@@ -17,8 +22,8 @@ pluginManagement {
 }
 
 plugins {
-    id "com.gradle.develocity" version "3.18.1"
-    id "org.gradle.toolchains.foojay-resolver-convention" version "0.8.0"
+  id "com.gradle.develocity" version "3.18.1"
+  id "org.gradle.toolchains.foojay-resolver-convention" version "0.8.0"
 }
 
 develocity {
@@ -46,16 +51,18 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "sample-web"
-
-includeBuild('..') {
-  dependencySubstitution {
-    substitute module("app.cash.sqldelight:primitive-adapters") using project(":adapters:primitive-adapters")
-    substitute module("app.cash.sqldelight:web-worker-driver") using project(":drivers:web-worker-driver")
-    substitute module("app.cash.sqldelight:runtime") using project(":runtime")
-    substitute module("app.cash.sqldelight:gradle-plugin") using project(":sqldelight-gradle-plugin")
-    substitute module("app.cash.sqldelight:sqlite-3-18-dialect") using project(":dialects:sqlite-3-18")
-    substitute module("app.cash.sqldelight:compiler-env") using project(":sqldelight-compiler:environment")
-    substitute module("app.cash.sqldelight:migration-env") using project(":sqlite-migrations:environment")
-    substitute module("app.cash.sqldelight:async-extensions") using project(":extensions:async-extensions")
+def useLocalDeps = Boolean.valueOf(useLocalDeps)
+if (useLocalDeps) {
+  includeBuild('..') {
+    dependencySubstitution {
+      substitute module("app.cash.sqldelight:primitive-adapters") using project(":adapters:primitive-adapters")
+      substitute module("app.cash.sqldelight:web-worker-driver") using project(":drivers:web-worker-driver")
+      substitute module("app.cash.sqldelight:runtime") using project(":runtime")
+      substitute module("app.cash.sqldelight:gradle-plugin") using project(":sqldelight-gradle-plugin")
+      substitute module("app.cash.sqldelight:sqlite-3-18-dialect") using project(":dialects:sqlite-3-18")
+      substitute module("app.cash.sqldelight:compiler-env") using project(":sqldelight-compiler:environment")
+      substitute module("app.cash.sqldelight:migration-env") using project(":sqlite-migrations:environment")
+      substitute module("app.cash.sqldelight:async-extensions") using project(":extensions:async-extensions")
+    }
   }
 }

@@ -1,6 +1,6 @@
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
-  id("app.cash.sqldelight")
+  id("me.gulya.sqldelight")
 }
 
 sqldelight {
@@ -8,7 +8,7 @@ sqldelight {
     HockeyDb {
       packageName = "com.example.sqldelight.hockey"
       generateAsync = true
-      srcDirs "src/jsMain/sqldelight"
+      srcDirs "src/commonMain/sqldelight"
     }
   }
 }
@@ -20,27 +20,50 @@ kotlin {
     binaries.executable()
     useCommonJs()
   }
+  wasmJs {
+    browser()
+    binaries.executable()
+    useCommonJs()
+  }
+  applyDefaultHierarchyTemplate {
+    it.common {
+      it.group("jsCommon") {
+        it.withJs()
+        it.withWasmJs()
+      }
+    }
+  }
+
+  def useLocalDeps = Boolean.valueOf(useLocalDeps)
 
   sourceSets {
-    jsMain {
-      dependencies {
-        implementation "app.cash.sqldelight:web-worker-driver"
-        implementation "app.cash.sqldelight:primitive-adapters"
-        implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.11.0"
-        implementation devNpm("copy-webpack-plugin", "9.1.0")
-        implementation npm('dateformat', '3.0.3')
-        implementation npm("sql.js", libs.versions.sqljs.get())
+    commonMain.dependencies {
+      if (useLocalDeps) {
+        implementation "me.gulya.sqldelight:primitive-adapters"
+      } else {
+        implementation "me.gulya.sqldelight:primitive-adapters:${remoteDepsVersion}"
+      }
+      implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
+      implementation "org.jetbrains.kotlinx:kotlinx-html:0.11.0"
+    }
+    jsCommonMain.dependencies {
+      if (useLocalDeps) {
+        implementation "me.gulya.sqldelight:web-worker-driver"
 
         def sqljsWorker = file("${gradle.includedBuild('sqldelight').projectDir}/drivers/web-worker-driver/sqljs")
         implementation npm("@cashapp/sqldelight-sqljs-worker", sqljsWorker)
+      } else {
+        implementation "me.gulya.sqldelight:web-worker-driver:${remoteDepsVersion}"
+        implementation npm("@cashapp/sqldelight-sqljs-worker", "2.0.2")
       }
+      implementation devNpm("copy-webpack-plugin", "9.1.0")
+      implementation npm("sql.js", libs.versions.sqljs.get())
+
     }
 
-    jsTest {
-      dependencies {
-        implementation 'org.jetbrains.kotlin:kotlin-test'
-        implementation libs.kotlin.coroutines.test
-      }
+    jsCommonTest.dependencies {
+      implementation 'org.jetbrains.kotlin:kotlin-test'
+      implementation libs.kotlin.coroutines.test
     }
   }
 }

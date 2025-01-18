@@ -1,31 +1,23 @@
-package com.example.sqldelight.hockey.data
+package com.example.sqldelight.hockey.db
 
 import app.cash.sqldelight.EnumColumnAdapter
 import app.cash.sqldelight.adapter.primitive.FloatColumnAdapter
 import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.async.coroutines.awaitCreate
 import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.driver.worker.WebWorkerDriver
 import com.example.sqldelight.hockey.HockeyDb
-import com.example.sqldelight.hockey.data.PlayerVals.Position
-import com.example.sqldelight.hockey.data.PlayerVals.Shoots
-import kotlin.js.Date
+import com.example.sqldelight.hockey.db.PlayerVals.Position
+import com.example.sqldelight.hockey.db.PlayerVals.Shoots
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.w3c.dom.Worker
+
+expect fun webWorkerDriver(): SqlDriver
 
 class DbHelper {
-  private val driver: SqlDriver
+  private val driver: SqlDriver = webWorkerDriver()
   private var db: HockeyDb? = null
 
   private val mutex = Mutex()
-
-  init {
-    @Suppress("UnsafeCastFromDynamic")
-    driver = WebWorkerDriver(
-      Worker(js("""new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url)""")),
-    )
-  }
 
   suspend fun withDatabase(block: suspend (HockeyDb) -> Unit): Unit = mutex.withLock {
     if (db == null) {

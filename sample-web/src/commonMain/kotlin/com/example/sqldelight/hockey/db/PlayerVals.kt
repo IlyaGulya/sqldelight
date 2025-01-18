@@ -1,4 +1,4 @@
-package com.example.sqldelight.hockey.data
+package com.example.sqldelight.hockey.db
 
 interface PlayerVals {
   enum class Shoots {
