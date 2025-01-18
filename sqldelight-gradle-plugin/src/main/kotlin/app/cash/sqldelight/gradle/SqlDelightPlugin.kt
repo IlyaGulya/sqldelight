@@ -15,6 +15,7 @@
  */
 package app.cash.sqldelight.gradle
 
+import app.cash.sqldelight.GROUP
 import app.cash.sqldelight.VERSION
 import app.cash.sqldelight.core.MINIMUM_SUPPORTED_VERSION
 import app.cash.sqldelight.core.SqlDelightPropertiesFile
@@ -61,12 +62,12 @@ abstract class SqlDelightPlugin : Plugin<Project> {
     }
 
     project.tasks.register("generateSqlDelightInterface") {
-      it.group = GROUP
+      it.group = TASK_GROUP
       it.description = "Aggregation task which runs every interface generation task for every given source"
     }
 
     project.tasks.register("verifySqlDelightMigration") {
-      it.group = GROUP
+      it.group = TASK_GROUP
       it.description = "Aggregation task which runs every migration task for every given source"
     }
 
@@ -147,6 +148,6 @@ abstract class SqlDelightPlugin : Plugin<Project> {
   }
 
   internal companion object {
-    const val GROUP = "sqldelight"
+    const val TASK_GROUP = "sqldelight"
   }
 }

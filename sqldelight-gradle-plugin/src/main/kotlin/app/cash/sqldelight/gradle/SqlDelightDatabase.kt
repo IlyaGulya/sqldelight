@@ -225,7 +225,7 @@ abstract class SqlDelightDatabase @Inject constructor(
         it.source(sourceFiles)
         it.include("**${File.separatorChar}*.$SQLDELIGHT_EXTENSION")
         it.include("**${File.separatorChar}*.$MIGRATION_EXTENSION")
-        it.group = SqlDelightPlugin.GROUP
+        it.group = SqlDelightPlugin.TASK_GROUP
         it.description = "Generate ${source.name} Kotlin interface for $name"
         it.verifyMigrations.set(verifyMigrations)
         it.classpath.setFrom(intellijEnv, migrationEnv, configuration)
@@ -270,7 +270,7 @@ abstract class SqlDelightDatabase @Inject constructor(
         it.include("**${File.separatorChar}*.$SQLDELIGHT_EXTENSION")
         it.include("**${File.separatorChar}*.$MIGRATION_EXTENSION")
         it.workingDirectory.set(File(project.buildDir, "sqldelight/migration_verification/${source.name.capitalize()}$name"))
-        it.group = SqlDelightPlugin.GROUP
+        it.group = SqlDelightPlugin.TASK_GROUP
         it.description = "Verify ${source.name} $name migrations and CREATE statements match."
         it.properties = getProperties()
         it.verifyMigrations.set(verifyMigrations)
@@ -286,7 +286,7 @@ abstract class SqlDelightDatabase @Inject constructor(
         it.source(sourceSet)
         it.include("**${File.separatorChar}*.$SQLDELIGHT_EXTENSION")
         it.include("**${File.separatorChar}*.$MIGRATION_EXTENSION")
-        it.group = SqlDelightPlugin.GROUP
+        it.group = SqlDelightPlugin.TASK_GROUP
         it.description = "Generate a .db file containing the current $name schema for ${source.name}."
         it.properties = getProperties()
         it.verifyMigrations.set(verifyMigrations)
@@ -312,7 +312,7 @@ abstract class SqlDelightDatabase @Inject constructor(
       it.include("**${File.separatorChar}*.$MIGRATION_EXTENSION")
       it.migrationOutputExtension.set(migrationOutputFileFormat)
       it.outputDirectory.set(migrationOutputDirectory)
-      it.group = SqlDelightPlugin.GROUP
+      it.group = SqlDelightPlugin.TASK_GROUP
       it.description = "Generate valid sql migration files for ${source.name} $name."
       it.properties = getProperties()
       it.classpath.setFrom(intellijEnv, configuration)
@@ -328,7 +328,7 @@ abstract class SqlDelightDatabase @Inject constructor(
       it.compilationUnit = getProperties().compilationUnits.single { it.name == source.name }
       it.source(sourceSet)
       it.include("**${File.separatorChar}*.$MIGRATION_EXTENSION")
-      it.group = SqlDelightPlugin.GROUP
+      it.group = SqlDelightPlugin.TASK_GROUP
       it.description = "Squash migrations into a single file for ${source.name} $name."
       it.properties = getProperties()
       it.classpath.setFrom(intellijEnv, configuration)
